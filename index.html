@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>OKnails — манікюр і педикюр, с. Кушниця</title>
+<meta name="description" content="OKnails: манікюр, педикюр і нарощення нігтів у с. Кушниця. Майстер Остолош Катерина. Прайс, онлайн-запис через календар або Telegram.">
+<meta property="og:title" content="OKnails — манікюр і педикюр">
+<meta property="og:description" content="Манікюр, педикюр і нарощення нігтів у с. Кушниця. Онлайн-запис.">
+<meta property="og:image" content="logo.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FAF7F2">
+<link rel="icon" href="logo-mark.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="logo-mark.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap">
+<style>
+/* Layout: one calm column of sections. Hero is left-aligned with the studio logo card on the right.
+   Online booking is the single dominant panel: three steps on the left, a sticky summary with the form on the right. */
+/* Palette taken from the OKnails logo: sand taupe, warm charcoal, gold brush tip. */
+:root {
+  --bg: #FAF7F2;
+  --surface: #FFFFFF;
+  --surface-2: #F0E9DD;
+  --fg: #2A2420;
+  --muted: #6B5F54;
+  --line: #E6DCCD;
+  --accent: #7A5C3E;
+  --accent-fg: #FFFFFF;
+  --accent-soft: #EFE4D3;
+  --gold: #B8913A;
+  --ok: #2F7A4D;
+  --err: #B3261E;
+  --busy: #A89C8F;
+  --logo-bg: #FEFEFC;
+  --card-a: #7A5F43;
+  --card-b: #35291F;
+  --shadow: 0 1px 2px rgba(42, 36, 32, .06), 0 10px 28px rgba(42, 36, 32, .07);
+  --font-display: 'Montserrat', 'Manrope', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171310; --surface: #211C18; --surface-2: #2C2520; --fg: #F3EDE4; --muted: #B7AB9D; --line: #3A322B;
+    --accent: #D8BE98; --accent-fg: #2A2016; --accent-soft: #3A2F23; --gold: #D9B45C; --ok: #7BCB9B; --err: #FF8A80; --busy: #7C7064;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171310; --surface: #211C18; --surface-2: #2C2520; --fg: #F3EDE4; --muted: #B7AB9D; --line: #3A322B;
+  --accent: #D8BE98; --accent-fg: #2A2016; --accent-soft: #3A2F23; --gold: #D9B45C; --ok: #7BCB9B; --err: #FF8A80; --busy: #7C7064;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 16px/1.55 var(--font-body); -webkit-text-size-adjust: 100%;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg);
+}
+h1, h2, h3, h4, p { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+
+.wrap {
+  width: 100%; max-width: 1120px; margin-left: auto; margin-right: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+section[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 108px); }
+@media (min-width: 820px) { section[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 76px); } }
+.section { padding-block: clamp(36px, 6vw, 72px); }
+.section + .section { border-top: 1px solid var(--line); }
+
+/* header */
+.hdr { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+.hdr-inner {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "brand cta" "nav theme";
+  align-items: center; gap: 2px 12px; padding-block: 10px 6px;
+}
+.brand { grid-area: brand; display: inline-flex; align-items: center; gap: 10px; min-width: 0; font: 700 1.05rem var(--font-display); letter-spacing: -.01em; color: var(--fg); text-decoration: none; }
+.brand-mark { display: block; flex: none; height: 34px; width: auto; border-radius: 8px; }
+.nav { grid-area: nav; display: flex; gap: 2px; overflow-x: auto; min-width: 0; scrollbar-width: none; padding-bottom: 4px; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a { white-space: nowrap; padding: 6px 12px; border-radius: 999px; color: var(--muted); text-decoration: none; font-weight: 600; font-size: .9rem; }
+.nav a:hover { color: var(--fg); background: var(--surface-2); }
+.hdr-cta { grid-area: cta; padding: .55rem 1rem; font-size: .9rem; }
+.theme { grid-area: theme; justify-self: end; display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.theme-btn { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); cursor: pointer; }
+.theme-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-btn:hover { color: var(--fg); }
+.theme-btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+@media (min-width: 820px) {
+  .hdr-inner { grid-template-columns: auto minmax(0, 1fr) auto auto; grid-template-areas: "brand nav theme cta"; padding-block: 12px; }
+  .nav { justify-content: center; padding-bottom: 0; }
+}
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .8rem 1.3rem;
+  border-radius: 999px; border: 1px solid transparent; font-weight: 700; font-size: .95rem; line-height: 1.2;
+  cursor: pointer; text-decoration: none; text-align: center; transition: background-color .15s, border-color .15s, transform .15s;
+}
+.btn-primary { background: var(--accent); color: var(--accent-fg); }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost { background: transparent; border-color: var(--line); color: var(--fg); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-block { display: flex; width: 100%; }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.copy {
+  padding: .4rem .8rem; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--fg);
+  font-weight: 700; font-size: .8rem; cursor: pointer; white-space: nowrap;
+}
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+.link-btn { background: none; border: 0; padding: 4px 0; color: var(--accent); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* hero */
+.hero { padding-block: clamp(28px, 6vw, 72px) clamp(32px, 5vw, 64px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
+.hero-grid > * { min-width: 0; }
+@media (min-width: 820px) { .hero-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); } }
+.kicker { font-weight: 700; font-size: .76rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+h1 { font: 600 clamp(1.9rem, 6vw, 3.1rem)/1.12 var(--font-display); letter-spacing: -.025em; text-wrap: balance; overflow-wrap: break-word; }
+h2 { font: 600 clamp(1.5rem, 4vw, 2.1rem)/1.18 var(--font-display); letter-spacing: -.02em; text-wrap: balance; overflow-wrap: break-word; }
+.lead { margin-top: 18px; font-size: 1.1rem; color: var(--muted); max-width: 52ch; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.status { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-size: .92rem; color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--busy); flex: none; }
+.dot.on { background: var(--ok); }
+.logo-card { justify-self: center; width: 100%; max-width: 380px; padding: clamp(14px, 3vw, 24px); border-radius: 28px; background: var(--logo-bg); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.logo-card img { display: block; width: 100%; height: auto; }
+
+/* section heads */
+.sec-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 28px; margin-bottom: 28px; }
+.note { color: var(--muted); max-width: 46ch; font-size: .95rem; }
+
+/* catalog */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: .45rem .95rem; border-radius: 999px; border: 1px solid var(--line); background: transparent; font-weight: 700; font-size: .88rem; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 16px; }
+.card { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); }
+.card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 24px; }
+.tag { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.draft { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; border: 1px dashed var(--gold); color: var(--muted); vertical-align: middle; white-space: nowrap; }
+.draft-note { margin-bottom: 20px; padding: 10px 14px; border: 1px dashed var(--gold); border-radius: 12px; color: var(--muted); font-size: .9rem; }
+.card.is-draft { border-style: dashed; box-shadow: none; }
+.pop { font-size: .72rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.card h3 { font: 500 1.05rem/1.25 var(--font-display); letter-spacing: -.01em; overflow-wrap: break-word; }
+.card p { color: var(--muted); font-size: .93rem; }
+.card-foot { margin-top: auto; padding-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.price { font-weight: 800; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.dur { color: var(--muted); font-size: .85rem; }
+
+/* price list */
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 32px 56px; align-items: start; }
+.price-cat h3 { font: 500 1.05rem var(--font-display); margin-bottom: 6px; }
+.prow { display: flex; align-items: baseline; gap: 8px; padding: 10px 0; }
+.prow .nm { min-width: 0; font-weight: 600; }
+.prow .nm small { display: block; color: var(--muted); font-weight: 400; font-size: .82rem; }
+.prow .dots { flex: 1; min-width: 16px; border-bottom: 2px dotted var(--line); transform: translateY(-5px); }
+.prow .pr { font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* booking */
+.book { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (min-width: 960px) { .book { grid-template-columns: minmax(0, 1fr) 370px; } .sum { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); } }
+.steps { display: grid; gap: 16px; min-width: 0; }
+.step { min-width: 0; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+.step-h { display: flex; align-items: center; gap: 10px; font: 500 1.05rem var(--font-display); margin-bottom: 14px; }
+.step > p { color: var(--muted); max-width: 60ch; }
+.num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 700 .85rem var(--font-body); flex: none; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.opt-group + .opt-group { margin-top: 16px; }
+legend { padding: 0; margin-bottom: 8px; font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 8px; }
+.opt { position: relative; display: block; cursor: pointer; }
+.opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.opt-body { display: flex; flex-direction: column; gap: 2px; height: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.opt-body b { font-size: .92rem; line-height: 1.3; }
+.opt-body small { color: var(--muted); font-size: .8rem; }
+.opt input:checked + .opt-body { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.opt input:focus-visible + .opt-body { outline: 2px solid var(--accent); outline-offset: 2px; }
+.extras-h { margin: 20px 0 8px; font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+.sum { min-width: 0; padding: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
+.sum-h { font: 500 1.15rem var(--font-display); margin-bottom: 14px; }
+.sum-list { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; margin: 0 0 16px; font-size: .93rem; }
+.sum-list dt { color: var(--muted); }
+.sum-list dd { margin: 0; font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+.sum-list .sum-total { padding-top: 10px; border-top: 1px solid var(--line); font-size: 1.05rem; }
+.sum-list dt.sum-total { margin-right: -14px; padding-right: 14px; }
+.step-cta { margin-top: 14px; }
+@media (min-width: 960px) { .step-cta { display: none; } }
+.sum .btn-block + .btn-block { margin-top: 10px; }
+.fine { margin-top: 12px; font-size: .82rem; color: var(--muted); }
+.tg-alt { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); }
+.tg-alt p { margin-bottom: 10px; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 4px; max-width: 100%; margin-bottom: 16px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+.seg-btn { padding: .5rem 1rem; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 700; font-size: .9rem; cursor: pointer; }
+.seg-btn:hover { color: var(--fg); }
+.seg-btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.pane > p { color: var(--muted); max-width: 60ch; }
+.fld-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 0 14px; }
+.fld { min-width: 0; }
+#tgForm { margin-top: 4px; }
+#tgForm label { display: block; margin: 14px 0 6px; font-size: .86rem; font-weight: 700; }
+#tgForm label span { color: var(--muted); font-weight: 500; }
+#tgForm input, #tgForm select, #tgForm textarea { width: 100%; font-size: 16px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: .7rem .85rem; resize: vertical; }
+#tgForm select:disabled { opacity: .6; }
+.hintline { margin-top: 6px; min-height: 1.3em; font-size: .82rem; color: var(--muted); }
+.err { min-height: 1.4em; margin: 10px 0 6px; color: var(--err); font-size: .9rem; font-weight: 600; }
+.tg-actions { display: grid; gap: 10px; }
+
+/* payment */
+.pay-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: stretch; }
+.pay { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+.pay h3 { font: 500 1.05rem var(--font-display); margin-bottom: 6px; }
+.pay > p { color: var(--muted); font-size: .93rem; }
+.paycard {
+  aspect-ratio: 1.75 / 1; max-width: 100%; margin: 4px 0 10px; padding: 16px 18px; border-radius: 16px; color: #fff;
+  background: linear-gradient(135deg, var(--card-a), var(--card-b)); display: flex; flex-direction: column; justify-content: space-between;
+}
+.paycard .bank { font-size: .82rem; font-weight: 600; opacity: .9; }
+.paycard .num16 { font-weight: 700; font-size: clamp(1rem, 4.6vw, 1.25rem); letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.paycard .holder { font-size: .85rem; font-weight: 600; opacity: .9; }
+.paycard span { min-height: 1.2em; }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.kv .k { grid-column: 1; font-size: .76rem; color: var(--muted); }
+.kv .v { grid-column: 1; font-weight: 700; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.kv .copy { grid-column: 2; grid-row: 1 / 3; }
+.pay .btn { margin-top: auto; }
+.pay-spacer { flex: 1; }
+
+/* hours + contacts */
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px 56px; align-items: start; }
+.hrow { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.hrow b { font-weight: 700; }
+.hrow.today { color: var(--accent); }
+.hrow .closed { color: var(--muted); }
+.hrow small { display: block; color: var(--muted); font-size: .78rem; text-align: right; }
+.side-h { font: 500 1.05rem var(--font-display); margin-bottom: 12px; }
+.about h2 { margin-bottom: 18px; }
+.about-text p { color: var(--muted); max-width: 56ch; }
+.about-text p + p { margin-top: 14px; }
+.facts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.facts li { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 0 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.facts li::before { content: ""; width: 8px; height: 8px; margin-top: .55em; border-radius: 50%; background: var(--gold); }
+.facts b { display: block; font-weight: 700; }
+.facts span { color: var(--muted); font-size: .94rem; }
+.side p { color: var(--muted); }
+.tz-note { margin-top: 14px; max-width: 46ch; color: var(--muted); font-size: .9rem; }
+.socials { display: grid; gap: 10px; }
+.social { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--fg); text-decoration: none; }
+.social:hover { border-color: var(--accent); }
+.social b { display: block; }
+.social small { color: var(--muted); font-size: .85rem; }
+.social .arrow { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
+.contact-block { margin-top: 24px; }
+.contact-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; }
+.contact-line b { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-weight: 700; }
+
+/* faq */
+.faq-list { max-width: 760px; }
+details.faq { border-bottom: 1px solid var(--line); }
+details.faq summary { position: relative; cursor: pointer; list-style: none; padding: 16px 36px 16px 0; font-weight: 700; }
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; font-weight: 500; color: var(--accent); }
+details.faq[open] summary::after { content: "\2212"; }
+details.faq p { margin-bottom: 16px; color: var(--muted); max-width: 65ch; }
+
+.foot { padding-block: 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
+.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 40; max-width: min(92vw, 420px);
+  padding: 12px 18px; border-radius: 999px; background: var(--fg); color: var(--bg); font-weight: 600; font-size: .9rem; text-align: center;
+  transform: translate(-50%, 24px); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<script>
+(function () {
+  try {
+    var m = localStorage.getItem('oknails-theme');
+    if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-theme', m);
+  } catch (e) { /* без збереження */ }
+})();
+</script>
+
+<header class="hdr">
+  <div class="wrap hdr-inner">
+    <a class="brand" href="#top"><img class="brand-mark" src="logo-mark.jpg" alt="" width="63" height="34"><span data-brand>OKnails</span></a>
+    <nav class="nav" aria-label="Розділи сайту">
+      <a href="#about">Студія</a>
+      <a href="#services">Послуги</a>
+      <a href="#prices">Прайс</a>
+      <a href="#book">Запис</a>
+      <a href="#payment">Оплата</a>
+      <a href="#hours">Графік</a>
+      <a href="#contacts">Контакти</a>
+    </nav>
+    <div class="theme" role="group" aria-label="Тема сайту">
+      <button class="theme-btn" type="button" data-theme-set="auto" aria-pressed="true" aria-label="Тема: автоматично, як у налаштуваннях пристрою" title="Автоматично, як у налаштуваннях пристрою"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M8 1.8v12.4a6.2 6.2 0 0 1 0-12.4z" fill="currentColor"/></svg></button>
+      <button class="theme-btn" type="button" data-theme-set="light" aria-pressed="false" aria-label="Світла тема" title="Світла тема"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg></button>
+      <button class="theme-btn" type="button" data-theme-set="dark" aria-pressed="false" aria-label="Темна тема" title="Темна тема"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z"/></svg></button>
+    </div>
+    <a class="btn btn-primary hdr-cta" href="#book">Записатись</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker" id="heroKicker">Манікюр і педикюр · Київ</p>
+        <h1>Охайні нігті, які тримаються тижнями</h1>
+        <p class="lead">Привіт, я Катерина. Приймаю за записом: без черг і поспіху, зі стерильними інструментами та покриттям, яке тримається 3–4 тижні.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#book">Обрати час</a>
+          <a class="btn btn-ghost" href="#prices">Прайс-лист</a>
+        </div>
+        <p class="status"><span class="dot" id="statusDot"></span><span id="statusText"></span></p>
+      </div>
+      <div class="logo-card"><img src="logo.jpg" alt="Логотип OKnails, Остолош Катерина" width="662" height="640"></div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap two about">
+      <div>
+        <p class="kicker">Про студію</p>
+        <h2>Студія в центрі села</h2>
+        <div class="about-text">
+          <p>Студія розташована в самому центрі села, у новому приміщенні, де продумано все для комфортного візиту. Взимку тут тепло, влітку прохолодно, тож сидіти на процедурі зручно за будь-якої погоди.</p>
+          <p>Поки триває процедура, можна випити кави чи чаю, подивитися телевізор або скористатися інтернетом. А якщо в селі зникло світло, плани не змінюються: у студії є власне джерело живлення, тому запис відбудеться вчасно.</p>
+        </div>
+      </div>
+      <ul class="facts" aria-label="Умови в студії">
+        <li><div><b>Нове приміщення</b><span>У самому центрі села</span></div></li>
+        <li><div><b>Комфортна температура</b><span>Взимку тепло, влітку прохолодно</span></div></li>
+        <li><div><b>Для гостей</b><span>Інтернет, кава та чай, телевізор</span></div></li>
+        <li><div><b>Власне джерело живлення</b><span>Запис відбувається навіть без світла</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="kicker">Каталог</p><h2>Послуги</h2></div>
+        <div class="chips" id="catChips" role="group" aria-label="Категорії послуг"></div>
+      </div>
+      <p class="draft-note" hidden><span class="draft">Умовно</span> Позиції з цією позначкою додано як приклад. Їх немає в затвердженому прайсі, тож це варіанти для обговорення.</p>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+  <section class="section" id="prices">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="kicker">Прайс-лист</p><h2>Ціни</h2></div>
+        <p class="note">Ціни в гривнях. Остаточна вартість залежить від довжини, стану нігтів і складності дизайну.</p>
+      </div>
+      <p class="draft-note" hidden><span class="draft">Умовно</span> Позиції з цією позначкою додано як приклад. Їх немає в затвердженому прайсі, тож це варіанти для обговорення.</p>
+      <div class="price-grid" id="priceGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="book">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="kicker">Онлайн-запис</p><h2>Запис на зручний час</h2></div>
+        <p class="note">Оберіть вільний час у календарі майстра. Якщо акаунта Google немає, надішліть запит у Telegram. Час скрізь київський.</p>
+      </div>
+      <div class="book">
+        <div class="steps">
+          <div class="step">
+            <h3 class="step-h"><span class="num">1</span>Послуга</h3>
+            <div id="svcOpts"></div>
+            <p class="extras-h">Додатково</p>
+            <div class="opts" id="extraOpts"></div>
+          </div>
+
+          <div class="step" id="stepWhen">
+            <h3 class="step-h"><span class="num">2</span>Дата й час</h3>
+            <div class="seg" role="group" aria-label="Спосіб запису">
+              <button class="seg-btn" type="button" data-mode="cal" aria-pressed="true">Через календар</button>
+              <button class="seg-btn" type="button" data-mode="tg" aria-pressed="false">Через Telegram</button>
+            </div>
+
+            <div class="pane" id="paneCal">
+              <p>Кнопка «Обрати час у календарі» відкриє календар майстра. Там видно лише вільні вікна, оберіть те, що підходить за тривалістю.</p>
+              <a class="btn btn-primary btn-block book-go step-cta" href="#" target="_blank" rel="noopener">Обрати час у календарі</a>
+            </div>
+
+            <div class="pane" id="paneTg" hidden>
+              <p>Для тих, у кого немає акаунта Google, або кому зручніше в месенджері. Оберіть бажаний час, майстер підтвердить його в Telegram.</p>
+              <form id="tgForm" novalidate>
+                <div class="fld-row">
+                  <div class="fld"><label for="tgDate">Дата</label><input id="tgDate" name="date" type="date"></div>
+                  <div class="fld"><label for="tgTime">Час <span>(київський)</span></label><select id="tgTime" name="time" disabled><option value="">Оберіть час</option></select></div>
+                </div>
+                <p class="hintline" id="tgHint" aria-live="polite"></p>
+                <div class="fld-row">
+                  <div class="fld"><label for="tgName">Ім'я</label><input id="tgName" name="name" type="text" autocomplete="given-name" placeholder="Як до вас звертатись"></div>
+                  <div class="fld"><label for="tgPhone">Телефон <span>(необов'язково)</span></label><input id="tgPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380"></div>
+                </div>
+                <label for="tgNote">Побажання <span>(необов'язково)</span></label>
+                <textarea id="tgNote" name="note" rows="2" placeholder="Форма, колір, дизайн, алергії"></textarea>
+                <p class="err" id="tgErr" role="alert"></p>
+                <div class="tg-actions">
+                  <a class="btn btn-primary btn-block" id="tgSend" href="#" target="_blank" rel="noopener">Надіслати в Telegram</a>
+                  <button class="btn btn-ghost btn-block" id="tgCopy" type="button">Скопіювати текст запиту</button>
+                </div>
+                <p class="fine">Якщо текст не з'явився в чаті, скопіюйте його кнопкою вище й вставте в повідомлення вручну. Запис діє після відповіді майстра.</p>
+              </form>
+            </div>
+          </div>
+
+          <div class="step">
+            <h3 class="step-h"><span class="num">3</span>Підтвердження</h3>
+            <p>Через календар підтвердження прийде на пошту, яку ви вкажете. Подію з листа можна додати в Google або Apple Календар. Через Telegram майстер відповість у чаті й підтвердить час.</p>
+          </div>
+        </div>
+
+        <aside class="sum" id="sum" aria-label="Ваш вибір">
+          <h3 class="sum-h">Ваш вибір</h3>
+          <dl class="sum-list" id="sumList"></dl>
+          <a class="btn btn-primary btn-block book-go" id="bookBtn" href="#" target="_blank" rel="noopener">Обрати час у календарі</a>
+          <button class="btn btn-ghost btn-block" id="copySel" type="button">Скопіювати вибір</button>
+          <p class="fine">Календар не знає, яку послугу ви обрали. Скопіюйте вибір і надішліть майстру в Telegram, або додайте його в коментар до запису, якщо поле є.</p>
+          <div class="tg-alt">
+            <p>Немає акаунта Google або зручніше в месенджері?</p>
+            <button class="btn btn-ghost btn-block" id="toTg" type="button">Записатись через Telegram</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="payment">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="kicker">Оплата</p><h2>Як сплатити</h2></div>
+        <p class="note">Оплатити можна після процедури: переказом на карту, за реквізитами або на місці.</p>
+      </div>
+      <div class="pay-grid" id="payGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="hours">
+    <div class="wrap two">
+      <div>
+        <div class="sec-head"><div><p class="kicker">Графік</p><h2>Години роботи</h2></div></div>
+        <div id="hoursList"></div>
+        <p class="tz-note">Усі години вказано за київським часом. Місцевий час на годину менший: 09:00 за київським це 08:00 за місцевим.</p>
+      </div>
+      <div class="side">
+        <h3 class="side-h">Зараз</h3>
+        <p id="hoursStatus"></p>
+        <h3 class="side-h" style="margin-top:24px">Без світла</h3>
+        <p>Студія працює навіть за відсутності електроенергії: є власне джерело живлення.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacts">
+    <div class="wrap two">
+      <div>
+        <div class="sec-head"><div><p class="kicker">Контакти</p><h2>Соцмережі</h2></div></div>
+        <div class="socials" id="socials"></div>
+      </div>
+      <div class="side">
+        <h3 class="side-h">Телефон</h3>
+        <div class="contact-line"><b id="phoneText"></b><button class="copy" id="phoneCopy" type="button">Копіювати</button></div>
+        <div class="links"><a id="phoneLink" href="#">Зателефонувати</a></div>
+        <div class="contact-block">
+          <h3 class="side-h">Адреса</h3>
+          <p id="addrText"></p>
+          <div class="links"><a id="gmaps" href="#" target="_blank" rel="noopener">Google Maps</a><a id="amaps" href="#" target="_blank" rel="noopener">Apple Maps</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="kicker">Перед візитом</p><h2>Часті питання</h2></div></div>
+      <div class="faq-list" id="faqList"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><span id="footL"></span><span id="footR"></span></div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* ================= НАЛАШТУВАННЯ: усі дані сайту редагуються тут ================= */
+var CONFIG = {
+  brand: 'OKnails',
+  master: 'Остолош Катерина',
+  city: 'с. Кушниця',
+  address: 'с. Кушниця, вул. Перемоги, 4',
+  mapGoogle: 'https://maps.app.goo.gl/RQCkG5WxCXEJ85bp6',
+  mapApple: 'https://maps.apple/p/aT-u.wh6iSY8XK',
+  phone: '+380 (97) 782-03-70',
+  bookingTelegram: 'kostolosh',
+  /* Розклад запису в Google Календарі. Для окремої послуги можна додати bookUrl: '...' у її рядок нижче */
+  bookingUrl: 'https://calendar.app.google/28Qtgm7zexeptga58',
+  socials: [
+    { label: 'Instagram', handle: '@oknails2022', url: 'https://www.instagram.com/oknails2022/' },
+    { label: 'Telegram', handle: '@kostolosh', url: 'https://t.me/kostolosh' }
+  ],
+  pay: {
+    /* Заповніть, щоб показати реквізити. Порожні поля сховані, тоді клієнт бачить, що реквізити надішле майстер */
+    card: { bank: '', number: '', holder: '' },
+    iban: { iban: '', receiver: '', taxId: '', purpose: 'Оплата послуг манікюру' },
+    onsite: 'Можна розрахуватися на місці після процедури.'
+  },
+  /* Усі години за київським часом. 0 = неділя, 1 = понеділок ... 6 = субота. null = вихідний.
+     lastStart: останній час початку запису (необов'язково) */
+  schedule: {
+    1: { open: '09:00', close: '18:00', lastStart: '16:00', breaks: [] },
+    2: { open: '09:00', close: '18:00', lastStart: '16:00', breaks: [] },
+    3: { open: '09:00', close: '18:00', lastStart: '16:00', breaks: [] },
+    4: { open: '09:00', close: '18:00', lastStart: '16:00', breaks: [] },
+    5: { open: '09:00', close: '18:00', lastStart: '16:00', breaks: [] },
+    6: { open: '10:00', close: '15:00', breaks: [] },
+    0: null
+  },
+  slotStep: 30,        /* крок бажаного початку в запиті через Telegram, хв */
+  leadMinutes: 120,    /* не пропонувати час ближче ніж за стільки хвилин */
+  horizonDays: 60,     /* на скільки днів уперед можна обрати дату */
+  defaultService: 'm2',
+  cats: [
+    { id: 'mani', name: 'Манікюр' },
+    { id: 'pedi', name: 'Педикюр' },
+    { id: 'ext', name: 'Нарощення' }
+  ],
+  /* draft: true = умовна позиція, її немає в затвердженому прайсі. Показується з позначкою «Умовно». */
+  showDraft: true,   /* false = сховати всі умовні позиції одним перемикачем */
+  services: [
+    { id: 'm1', cat: 'mani', name: 'Гігієна нігтів', desc: 'Обробка кутикули та форми без покриття.', min: 60, price: 150 },
+    { id: 'm2', cat: 'mani', name: 'Покриття гель-лаком', desc: 'Обробка нігтів, база, колір і топ.', min: 120, price: 500, pop: true },
+    { id: 'm3', cat: 'mani', name: 'Покриття з укріпленням', desc: 'Покриття гель-лаком з укріпленням нігтя: підтримка для тонких і ламких нігтів.', min: 150, price: 550 },
+    { id: 'm4', cat: 'mani', name: 'Чоловічий манікюр', desc: 'Охайна форма, кутикула, полірування. Без покриття.', min: 60, price: 500, draft: true },
+    { id: 'e1', cat: 'ext', name: 'Нарощення нігтів', desc: 'Моделювання нової форми та довжини. Остаточна ціна залежить від довжини й складності.', min: 180, price: 600, from: true },
+    { id: 'e2', cat: 'ext', name: 'Корекція нарощених нігтів', desc: 'Оновлення форми, заповнення біля кутикули та нове покриття.', min: 150, price: 1300, draft: true },
+    { id: 'p1', cat: 'pedi', name: 'Педикюр без покриття', desc: 'Обробка стоп, пальців і кутикули.', min: 90, price: 400 },
+    { id: 'p4', cat: 'pedi', name: 'Повний педикюр', desc: 'Повна обробка стоп і нігтів із покриттям.', min: 120, price: 600, pop: true },
+    { id: 'p2', cat: 'pedi', name: 'Педикюр + гель-лак', desc: 'Повний педикюр із покриттям гель-лаком.', min: 120, price: 1150, draft: true },
+    { id: 'p3', cat: 'pedi', name: 'Експрес-педикюр', desc: 'Тільки пальці та покриття. Коли немає часу на повний догляд.', min: 60, price: 700, draft: true }
+  ],
+  extras: [
+    { id: 'x1', name: 'Зняття гель-лаку (моє покриття)', min: 20, price: 100, draft: true },
+    { id: 'x2', name: 'Зняття чужого покриття або нарощення', min: 30, price: 200, draft: true },
+    { id: 'x3', name: 'Френч або лунки', min: 30, price: 150, draft: true },
+    { id: 'x4', name: 'Дизайн на 2 нігті', min: 20, price: 120, draft: true },
+    { id: 'x5', name: 'Складний дизайн, стрази', min: 30, price: 250, from: true, draft: true },
+    { id: 'x6', name: 'Ремонт нігтя (за 1 шт.)', min: 15, price: 80, draft: true },
+    { id: 'x7', name: 'Парафінотерапія рук', min: 20, price: 200, draft: true }
+  ],
+  faq: [
+    { q: 'За яким часом ви працюєте?', a: 'Усі години на сайті вказано за київським часом. Місцевий час на годину менший, тож, наприклад, 09:00 за київським це 08:00 за місцевим.' },
+    { q: 'Чи можна перенести або скасувати запис?', a: 'Так, це можна зробити не пізніше ніж за 24 години до візиту. Напишіть мені в Telegram або Instagram.' },
+    { q: 'Що, якщо я запізнююсь?', a: 'Запізнення до 15 хвилин: сеанс буде трохи коротшим або без частини дизайну. Якщо запізнення більше, час доведеться перенести.' },
+    { q: 'Чи є гарантія на покриття?', a: 'Так, 7 днів. Якщо покриття відшарувалось або відколовся шматочок, я безкоштовно виправлю це.' },
+    { q: 'Як ви обробляєте інструменти?', a: 'Після кожного клієнта інструменти проходять дезінфекцію та стерилізацію у крафт-пакетах. Файли й пилки одноразові або індивідуальні.' }
+  ]
+};
+/* ================================================================================ */
+
+/*#helpers*/
+var TZ = 'Europe/Kyiv';
+var DOW_L = ['неділя', 'понеділок', 'вівторок', 'середа', 'четвер', "п'ятниця", 'субота'];
+var dtf = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+function nowKyiv() {
+  var o = {}; dtf.formatToParts(new Date()).forEach(function (p) { o[p.type] = p.value; });
+  return { date: o.year + '-' + o.month + '-' + o.day, min: (+o.hour) * 60 + (+o.minute) };
+}
+function weekday(ds) { var a = ds.split('-'); return new Date(Date.UTC(+a[0], +a[1] - 1, +a[2])).getUTCDay(); }
+function addDays(ds, n) { var a = ds.split('-'); return new Date(Date.UTC(+a[0], +a[1] - 1, +a[2] + n)).toISOString().slice(0, 10); }
+function toMin(s) { var a = s.split(':'); return (+a[0]) * 60 + (+a[1]); }
+function fmtDur(m) {
+  var h = Math.floor(m / 60), r = m % 60;
+  if (h && r) return h + ' год ' + r + ' хв';
+  return h ? h + ' год' : r + ' хв';
+}
+function fmtPrice(n, from) { return (from ? 'від ' : '') + n.toLocaleString('uk-UA') + ' грн'; }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+var MONTHS_G = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function fmtTime(m) { return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
+function longLabel(ds) { var a = ds.split('-'); return DOW_L[weekday(ds)] + ', ' + (+a[2]) + ' ' + MONTHS_G[+a[1] - 1] + ' ' + a[0]; }
+/*#end*/
+
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function scrollToEl(el, block) { if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: block || 'start' }); }
+
+if (!CONFIG.showDraft) {
+  CONFIG.services = CONFIG.services.filter(function (s) { return !s.draft; });
+  CONFIG.extras = CONFIG.extras.filter(function (e) { return !e.draft; });
+}
+var SVC = {}, EX = {};
+CONFIG.services.forEach(function (s) { SVC[s.id] = s; });
+CONFIG.extras.forEach(function (e) { EX[e.id] = e; });
+
+/* ---------- state ---------- */
+var st = { svc: CONFIG.defaultService, extras: [] };
+function totals() {
+  var s = SVC[st.svc], min = s.min, price = s.price, from = !!s.from;
+  st.extras.forEach(function (id) { var e = EX[id]; min += e.min; price += e.price; if (e.from) from = true; });
+  return { svc: s, min: min, price: price, from: from };
+}
+
+/* ---------- toast + copy ---------- */
+var toastTimer;
+function toast(msg) {
+  var el = $('#toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2400);
+}
+function fallbackCopy(text, cb) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  if (ok) cb(); else toast('Не вдалося скопіювати. Виділіть текст вручну.');
+}
+function copyText(text) {
+  var done = function () { toast('Скопійовано'); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+  } else { fallbackCopy(text, done); }
+}
+
+/* ---------- static sections from CONFIG ---------- */
+function renderStatic() {
+  $$('[data-brand]').forEach(function (el) { el.textContent = CONFIG.brand; });
+  $('#heroKicker').textContent = 'Манікюр і педикюр · ' + CONFIG.city;
+  $('#footL').textContent = '© ' + new Date().getFullYear() + ' ' + CONFIG.brand;
+  $('#footR').textContent = CONFIG.master + ' · ' + CONFIG.city;
+  $('#phoneText').textContent = CONFIG.phone;
+  $('#phoneLink').href = 'tel:' + CONFIG.phone.replace(/[^+\d]/g, '');
+  $('#addrText').textContent = CONFIG.address;
+  $('#gmaps').href = CONFIG.mapGoogle;
+  $('#amaps').href = CONFIG.mapApple;
+  $('#phoneCopy').setAttribute('data-copy', CONFIG.phone);
+
+  $('#socials').innerHTML = CONFIG.socials.map(function (s) {
+    return '<a class="social" href="' + esc(s.url) + '" target="_blank" rel="noopener"><span><b>' + esc(s.label) + '</b><small>' + esc(s.handle) + '</small></span><span class="arrow" aria-hidden="true">↗</span></a>';
+  }).join('');
+
+  $('#faqList').innerHTML = CONFIG.faq.map(function (f) {
+    return '<details class="faq"><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + '</p></details>';
+  }).join('');
+
+  var order = [1, 2, 3, 4, 5, 6, 0], today = weekday(nowKyiv().date);
+  $('#hoursList').innerHTML = order.map(function (d) {
+    var s = CONFIG.schedule[d], isT = d === today;
+    var notes = [];
+    if (s && s.breaks && s.breaks.length) notes.push('перерва ' + s.breaks.map(function (b) { return b[0] + '–' + b[1]; }).join(', '));
+    if (s && s.lastStart) notes.push('останній запис о ' + s.lastStart);
+    var brk = notes.length ? '<small>' + notes.join(', ') + '</small>' : '';
+    return '<div class="hrow' + (isT ? ' today' : '') + '"><b>' + cap(DOW_L[d]) + (isT ? ' · сьогодні' : '') + '</b>' +
+      (s ? '<span>' + s.open + '–' + s.close + brk + '</span>' : '<span class="closed">вихідний</span>') + '</div>';
+  }).join('');
+
+  var p = CONFIG.pay, ib = p.iban, cardOn = !!p.card.number;
+  var reqRows = [['Одержувач', ib.receiver], ['IBAN', (ib.iban || '').replace(/\s/g, '')], ['РНОКПП', ib.taxId], ['Призначення платежу', ib.purpose]].filter(function (r) { return r[1]; });
+  var reqOn = !!(ib.iban || ib.receiver);
+  var rowsHtml = reqRows.map(function (r) {
+    return '<div class="kv"><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span><button class="copy" type="button" data-copy="' + esc(r[1]) + '">Копіювати</button></div>';
+  }).join('');
+  var allReq = reqRows.map(function (r) { return r[0] + ': ' + r[1]; }).join('\n');
+  var cardHtml = cardOn
+    ? '<article class="pay"><h3>Переказ на карту</h3>' +
+      '<div class="paycard" aria-label="Картка для переказу"><span class="bank">' + esc(p.card.bank) + '</span><span class="num16">' + esc(p.card.number) + '</span><span class="holder">' + esc(p.card.holder) + '</span></div>' +
+      '<p>Переказ із будь-якого банку за номером картки. У коментарі вкажіть ім\'я та дату візиту.</p><span class="pay-spacer"></span>' +
+      '<button class="btn btn-primary btn-block" type="button" data-copy="' + esc(p.card.number.replace(/\s/g, '')) + '">Скопіювати номер картки</button></article>'
+    : '<article class="pay"><h3>Переказ на карту</h3><p>Номер картки надішле майстер у Telegram за запитом. Переказ можливий із будь-якого банку.</p></article>';
+  var reqHtml = reqOn
+    ? '<article class="pay"><h3>За реквізитами</h3>' + rowsHtml +
+      '<span class="pay-spacer"></span><button class="btn btn-ghost btn-block" type="button" data-copy="' + esc(allReq) + '">Скопіювати всі реквізити</button></article>'
+    : '<article class="pay"><h3>За реквізитами</h3><p>Реквізити (IBAN) надішле майстер у Telegram за запитом.</p></article>';
+  $('#payGrid').innerHTML = cardHtml + reqHtml +
+    '<article class="pay"><h3>У студії</h3><p>' + esc(p.onsite) + '</p></article>';
+}
+
+/* ---------- catalog + price list ---------- */
+var catFilter = 'all';
+var DRAFT = '<span class="draft">Умовно</span>';
+function renderCatalog() {
+  var chips = [{ id: 'all', name: 'Усі' }].concat(CONFIG.cats);
+  $('#catChips').innerHTML = chips.map(function (c) {
+    return '<button class="chip" type="button" data-cat="' + c.id + '" aria-pressed="' + (catFilter === c.id) + '">' + esc(c.name) + '</button>';
+  }).join('');
+  var catName = {}; CONFIG.cats.forEach(function (c) { catName[c.id] = c.name; });
+  $('#cards').innerHTML = CONFIG.services.filter(function (s) { return catFilter === 'all' || s.cat === catFilter; }).map(function (s) {
+    return '<article class="card' + (s.draft ? ' is-draft' : '') + '"><div class="card-top"><span class="tag">' + esc(catName[s.cat]) + '</span>' + (s.draft ? DRAFT : s.pop ? '<span class="pop">Популярне</span>' : '') + '</div>' +
+      '<h3>' + esc(s.name) + '</h3><p>' + esc(s.desc) + '</p>' +
+      '<div class="card-foot"><div><div class="price">' + fmtPrice(s.price, s.from) + '</div><div class="dur">' + fmtDur(s.min) + '</div></div>' +
+      '<button class="btn btn-ghost" type="button" data-pick="' + s.id + '">Обрати</button></div></article>';
+  }).join('');
+}
+function renderDraftNotes() {
+  var any = CONFIG.services.concat(CONFIG.extras).some(function (x) { return x.draft; });
+  $$('.draft-note').forEach(function (n) { n.hidden = !any; });
+}
+function renderPrices() {
+  var row = function (name, min, price, from, draft) {
+    return '<div class="prow"><span class="nm">' + esc(name) + (draft ? ' ' + DRAFT : '') + '<small>' + fmtDur(min) + '</small></span><span class="dots"></span><span class="pr">' + fmtPrice(price, from) + '</span></div>';
+  };
+  var h = CONFIG.cats.map(function (c) {
+    return '<div class="price-cat"><h3>' + esc(c.name) + '</h3>' + CONFIG.services.filter(function (s) { return s.cat === c.id; }).map(function (s) { return row(s.name, s.min, s.price, s.from, s.draft); }).join('') + '</div>';
+  }).join('');
+  if (CONFIG.extras.length) h += '<div class="price-cat"><h3>Додатково</h3>' + CONFIG.extras.map(function (e) { return row(e.name, e.min, e.price, e.from, e.draft); }).join('') + '</div>';
+  $('#priceGrid').innerHTML = h;
+}
+
+/* ---------- booking ---------- */
+function renderOptions() {
+  var h = CONFIG.cats.map(function (c) {
+    return '<fieldset class="opt-group"><legend>' + esc(c.name) + '</legend><div class="opts">' +
+      CONFIG.services.filter(function (s) { return s.cat === c.id; }).map(function (s) {
+        return '<label class="opt"><input type="radio" name="svc" value="' + s.id + '"' + (st.svc === s.id ? ' checked' : '') + '><span class="opt-body"><b>' + esc(s.name) + '</b><small>' + fmtDur(s.min) + ' · ' + fmtPrice(s.price, s.from) + (s.draft ? ' · умовно' : '') + '</small></span></label>';
+      }).join('') + '</div></fieldset>';
+  }).join('');
+  $('#svcOpts').innerHTML = h;
+  $('.extras-h').hidden = !CONFIG.extras.length;
+  $('#extraOpts').innerHTML = CONFIG.extras.map(function (e) {
+    return '<label class="opt"><input type="checkbox" name="extra" value="' + e.id + '"><span class="opt-body"><b>' + esc(e.name) + '</b><small>+' + fmtDur(e.min) + ' · +' + fmtPrice(e.price, e.from) + (e.draft ? ' · умовно' : '') + '</small></span></label>';
+  }).join('');
+}
+function extrasNames() { return st.extras.map(function (id) { return EX[id].name; }).join(', '); }
+function renderSum() {
+  var t = totals(), rows = [['Послуга', t.svc.name]];
+  if (st.extras.length) rows.push(['Додатково', extrasNames()]);
+  rows.push(['Тривалість', fmtDur(t.min)]);
+  $('#sumList').innerHTML = rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') +
+    '<dt class="sum-total">Вартість</dt><dd class="sum-total">' + esc(fmtPrice(t.price, t.from)) + '</dd>';
+  var url = t.svc.bookUrl || CONFIG.bookingUrl;
+  $$('.book-go').forEach(function (a) { a.href = url; });
+}
+function selectionText() {
+  var t = totals(), l = ['Вітаю! Хочу записатись.', 'Послуга: ' + t.svc.name];
+  if (st.extras.length) l.push('Додатково: ' + extrasNames());
+  l.push('Орієнтовна тривалість: ' + fmtDur(t.min), 'Орієнтовна вартість: ' + fmtPrice(t.price, t.from));
+  return l.join('\n');
+}
+function pickService(id) {
+  st.svc = id;
+  var inp = $('input[name="svc"][value="' + id + '"]');
+  if (inp) inp.checked = true;
+  renderSum();
+}
+
+/* ---------- telegram request ---------- */
+function setMode(mode) {
+  $('#paneCal').hidden = mode !== 'cal';
+  $('#paneTg').hidden = mode !== 'tg';
+  $$('.seg-btn').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
+}
+function startTimes(ds, dur) {
+  var sch = CONFIG.schedule[weekday(ds)], out = [];
+  if (!sch) return out;
+  var open = toMin(sch.open), close = toMin(sch.close), now = nowKyiv();
+  for (var t = open; t + dur <= close; t += CONFIG.slotStep) {
+    if (sch.lastStart && t > toMin(sch.lastStart)) break;
+    var clash = (sch.breaks || []).some(function (b) { return t < toMin(b[1]) && t + dur > toMin(b[0]); });
+    if (clash) continue;
+    if (ds === now.date && t < now.min + CONFIG.leadMinutes) continue;
+    out.push(t);
+  }
+  return out;
+}
+function renderTimes() {
+  var ds = $('#tgDate').value, sel = $('#tgTime'), hint = $('#tgHint'), dur = totals().min, prev = sel.value, list = [];
+  var html = '<option value="">Оберіть час</option>', today = nowKyiv().date, msg = '';
+  if (!ds) msg = 'Спочатку оберіть дату.';
+  else if (ds < today) msg = 'Ця дата вже минула.';
+  else if (ds > addDays(today, CONFIG.horizonDays)) msg = 'Дату можна обрати на ' + CONFIG.horizonDays + ' днів уперед.';
+  else if (!CONFIG.schedule[weekday(ds)]) msg = cap(DOW_L[weekday(ds)]) + ': вихідний. Оберіть інший день.';
+  else {
+    list = startTimes(ds, dur);
+    msg = list.length ? 'Тривалість: ' + fmtDur(dur) + '. Час київський, у списку початок і кінець.' : 'На цей день немає підходящого часу для ' + fmtDur(dur) + '. Оберіть інший день.';
+  }
+  html += list.map(function (t) { return '<option value="' + t + '">' + fmtTime(t) + '–' + fmtTime(t + dur) + '</option>'; }).join('');
+  sel.innerHTML = html;
+  sel.disabled = !list.length;
+  if (list.length && prev && list.indexOf(+prev) > -1) sel.value = prev;
+  hint.textContent = msg;
+}
+function tgValues() {
+  return { date: $('#tgDate').value, time: $('#tgTime').value, name: $('#tgName').value.trim(), phone: $('#tgPhone').value.trim(), note: $('#tgNote').value.trim() };
+}
+function tgError(v) {
+  if (!v.date) return 'Оберіть бажану дату.';
+  if ($('#tgTime').disabled) return 'На цю дату запис неможливий. Оберіть інший день.';
+  if (v.time === '') return 'Оберіть бажаний час.';
+  if (v.name.length < 2) return "Вкажіть ім'я.";
+  if (v.phone && v.phone.replace(/\D/g, '').length < 10) return 'Перевірте номер телефону: щонайменше 10 цифр.';
+  return '';
+}
+function tgMessage(v) {
+  var t = totals(), start = +v.time, l = ['Вітаю! Хочу записатись.', 'Послуга: ' + t.svc.name];
+  if (st.extras.length) l.push('Додатково: ' + extrasNames());
+  l.push('Бажана дата: ' + longLabel(v.date), 'Бажаний час: ' + fmtTime(start) + '–' + fmtTime(start + t.min) + ' (за київським часом)', 'Орієнтовна вартість: ' + fmtPrice(t.price, t.from), "Ім'я: " + v.name);
+  if (v.phone) l.push('Телефон: ' + v.phone);
+  if (v.note) l.push('Побажання: ' + v.note);
+  return l.join('\n');
+}
+function tgPrepare() {
+  var v = tgValues(), err = tgError(v);
+  $('#tgErr').textContent = err;
+  if (err) return null;
+  saveContact();
+  return tgMessage(v);
+}
+function saveContact() {
+  try { localStorage.setItem('oknails-contact', JSON.stringify({ n: $('#tgName').value.trim(), p: $('#tgPhone').value.trim() })); } catch (e) { /* без збереження */ }
+}
+function loadContact() {
+  try {
+    var c = JSON.parse(localStorage.getItem('oknails-contact') || 'null');
+    if (c) { $('#tgName').value = c.n || ''; $('#tgPhone').value = c.p || ''; }
+  } catch (e) { /* без збереження */ }
+}
+function initTg() {
+  var today = nowKyiv().date;
+  $('#tgDate').min = today; $('#tgDate').max = addDays(today, CONFIG.horizonDays);
+  loadContact(); renderTimes(); setMode('cal');
+}
+
+/* ---------- hero: live status ---------- */
+function renderHero() {
+  var n = nowKyiv(), sch = CONFIG.schedule[weekday(n.date)], text = '', on = false;
+  if (sch) {
+    var o = toMin(sch.open), c = toMin(sch.close), inBreak = null;
+    (sch.breaks || []).forEach(function (b) { if (n.min >= toMin(b[0]) && n.min < toMin(b[1])) inBreak = b; });
+    if (n.min >= o && n.min < c) {
+      if (inBreak) text = 'Зараз перерва до ' + inBreak[1];
+      else { on = true; text = 'Зараз працюю до ' + sch.close; }
+    } else if (n.min < o) text = 'Сьогодні відкриваюсь о ' + sch.open;
+  }
+  if (!text) {
+    for (var i = 1; i <= 7; i++) {
+      var d = addDays(n.date, i), s2 = CONFIG.schedule[weekday(d)];
+      if (s2) { text = 'Зараз зачинено. Наступний робочий день: ' + (i === 1 ? 'завтра' : DOW_L[weekday(d)]) + ' з ' + s2.open; break; }
+    }
+  }
+  if (text) text += ' (за київським часом)';
+  $('#statusText').textContent = text; $('#hoursStatus').textContent = text;
+  $('#statusDot').className = 'dot' + (on ? ' on' : '');
+}
+
+/* ---------- theme ---------- */
+var THEME_KEY = 'oknails-theme';
+function storedTheme() {
+  try { var v = localStorage.getItem(THEME_KEY); return v === 'light' || v === 'dark' ? v : 'auto'; } catch (e) { return 'auto'; }
+}
+function markTheme(mode) {
+  $$('.theme-btn').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-set') === mode)); });
+}
+function applyTheme(mode) {
+  var root = document.documentElement;
+  if (mode === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', mode);
+  try { if (mode === 'auto') localStorage.removeItem(THEME_KEY); else localStorage.setItem(THEME_KEY, mode); } catch (e) { /* без збереження */ }
+  markTheme(mode);
+}
+function initTheme() { markTheme(storedTheme()); }
+
+/* ---------- events ---------- */
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('a[href^="#"]');
+  if (a && a.getAttribute('href').length > 1) {
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if (el) { e.preventDefault(); scrollToEl(el, 'start'); }
+    return;
+  }
+  var tb = e.target.closest('.theme-btn');
+  if (tb) { applyTheme(tb.getAttribute('data-theme-set')); return; }
+  var cp = e.target.closest('[data-copy]');
+  if (cp) { copyText(cp.getAttribute('data-copy')); return; }
+  var chip = e.target.closest('[data-cat]');
+  if (chip) { catFilter = chip.getAttribute('data-cat'); renderCatalog(); return; }
+  var seg = e.target.closest('.seg-btn');
+  if (seg) { setMode(seg.getAttribute('data-mode')); return; }
+  if (e.target.closest('#toTg')) { setMode('tg'); scrollToEl($('#stepWhen'), 'start'); return; }
+  var pick = e.target.closest('[data-pick]');
+  if (pick) { pickService(pick.getAttribute('data-pick')); scrollToEl($('#book'), 'start'); }
+});
+document.addEventListener('change', function (e) {
+  var t = e.target;
+  if (t.name === 'svc') { st.svc = t.value; renderSum(); renderTimes(); }
+  if (t.name === 'extra') { st.extras = $$('input[name="extra"]:checked').map(function (i) { return i.value; }); renderSum(); renderTimes(); }
+  if (t.id === 'tgDate') renderTimes();
+});
+$('#tgForm').addEventListener('input', function () { $('#tgErr').textContent = ''; });
+$('#tgForm').addEventListener('submit', function (e) { e.preventDefault(); $('#tgSend').click(); });
+$('#tgSend').addEventListener('click', function (e) {
+  var m = tgPrepare();
+  if (!m) { e.preventDefault(); return; }
+  this.href = 'https://t.me/' + encodeURIComponent(CONFIG.bookingTelegram) + '?text=' + encodeURIComponent(m);
+  toast('Відкриваю Telegram');
+});
+$('#tgCopy').addEventListener('click', function () { var m = tgPrepare(); if (m) copyText(m); });
+$('#copySel').addEventListener('click', function () { copyText(selectionText()); });
+
+/* ---------- start ---------- */
+renderStatic(); renderCatalog(); renderPrices(); renderDraftNotes(); renderOptions(); renderSum(); initTg(); renderHero(); initTheme();
+})();
+</script>
+
+</body></html>
